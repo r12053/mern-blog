@@ -1,5 +1,6 @@
 import {formatISO9075} from "date-fns";
 import {Link} from "react-router-dom";
+import CommentsList from "./pages/CommentList";
 
 export default function Post({_id,title,summary,cover,content,createdAt,author}) {
 
@@ -20,6 +21,7 @@ export default function Post({_id,title,summary,cover,content,createdAt,author})
         </p>
         <p className="summary">{summary}</p>
       </div>
+      <CommentsList blogId={_id} />
     </div>
   );
 }

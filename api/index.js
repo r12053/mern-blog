@@ -19,7 +19,10 @@ app.use(express.json());
 app.use(cookieParser());
 app.use('/uploads', express.static(__dirname + '/uploads'));
 
-mongoose.connect('mongodb+srv://blog:RD8paskYC8Ayj09u@cluster0.pflplid.mongodb.net/?retryWrites=true&w=majority');
+mongoose.connect('mongodb+srv://dbfrProject:%21kB%40fa5R%23R4J.N2@cluster0.hwklbfg.mongodb.net/myfirstdatabase?retryWrites=true&w=majority').then(() => console.log('MongoDB connected ✅'))
+.catch(err => {
+  console.error('Connection error ❌:', err);  // Log the full error here
+});
 
 app.post('/register', async (req,res) => {
   const {username,password} = req.body;
@@ -66,6 +69,7 @@ app.post('/logout', (req,res) => {
 });
 
 app.post('/post', uploadMiddleware.single('file'), async (req,res) => {
+  console.log("atleast here hhh")
   const {originalname,path} = req.file;
   const parts = originalname.split('.');
   const ext = parts[parts.length - 1];
@@ -89,6 +93,7 @@ app.post('/post', uploadMiddleware.single('file'), async (req,res) => {
 });
 
 app.put('/post',uploadMiddleware.single('file'), async (req,res) => {
+  console.log("atleast here hhh")
   let newPath = null;
   if (req.file) {
     const {originalname,path} = req.file;
@@ -120,6 +125,7 @@ app.put('/post',uploadMiddleware.single('file'), async (req,res) => {
 });
 
 app.get('/post', async (req,res) => {
+  console.log("atleast here hhh")
   res.json(
     await Post.find()
       .populate('author', ['username'])
@@ -133,6 +139,8 @@ app.get('/post/:id', async (req, res) => {
   const postDoc = await Post.findById(id).populate('author', ['username']);
   res.json(postDoc);
 })
+const commentRoutes = require('./routes/comments');
+app.use('/api/comments', commentRoutes);
 
 app.listen(4000);
 //
